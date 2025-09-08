@@ -9,6 +9,7 @@ using CatalogAPI.Product.GetProductByCategory;
 using CatalogAPI.Product.GetProductById;
 using CatalogAPI.Product.UpdateProduct;
 using FluentValidation;
+using HealthChecks.UI.Client;
 using Marten;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,7 +47,8 @@ if(builder.Environment.IsDevelopment())
 {
     builder.Services.InitializeMartenWith<CatalogInitialData>();
 }
-
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
 // Add services to the container.
 
@@ -78,6 +80,12 @@ app.UseExceptionHandler(errorApp =>
         await context.Response.WriteAsJsonAsync(result);
     });
 });
+
+app.UseHealthChecks("/health",
+    new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 
 app.Run();
 

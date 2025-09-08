@@ -14,11 +14,12 @@ namespace CatalogAPI.Product.GetProduct
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             app.MapGet("/products", 
-                async (ISender sender
+                async ([AsParameters] GetProductsQuery request, ISender sender
                 ) =>
             {
-                
-                var query = new GetProductsQuery();
+                //var query = request.Adapt<GetProductsQuery>();
+                var query = request;
+                //var query = new GetProductsQuery();
                 var result = await sender.Send(query);
                 var response = result.Adapt<GetProductsResponse>();
 
