@@ -25,7 +25,6 @@ namespace CatalogAPI.Product.GetProductByCategory
     {
         public async Task<GetProductByCategoryResult> Handle(GetProductByCategoryQuery request, CancellationToken cancellationToken)
         {
-            logger.LogInformation("Handling GetProductByCategoryQuery for Category: {Category}", request.Category);
             var products = session.Query<dto.Product>().ToList();
             var filteredProducts = products
                 .Where(x => x.Category.Contains(request.Category, StringComparer.OrdinalIgnoreCase))

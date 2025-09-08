@@ -37,17 +37,8 @@ namespace CatalogAPI.Product.CreateProduct
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            // Here you would typically add code to save the product to a database.
-            // For this example, we'll just simulate creating a product and returning its ID.
-            //var result = await validator.ValidateAsync(request, cancellationToken);
-            //var errors = result.Errors;
-            //if (errors.Any())
-            //{
-            //    throw new ValidationException(errors);
-            //}
             var newProductId = Guid.NewGuid(); // Simulate generating a new product ID.
             // Change the reference from 'Product' (namespace) to the correct type, likely 'CatalogAPI.Modal.Product'
-            logger.LogInformation("New product id {0} ", newProductId);
 
             var product = new CatalogAPI.Modal.Product
             {

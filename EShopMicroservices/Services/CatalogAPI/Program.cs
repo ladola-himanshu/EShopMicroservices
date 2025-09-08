@@ -1,5 +1,7 @@
 using BuilingBlocks.Behaviour;
 using Carter;
+using CatalogAPI.Data;
+using CatalogAPI.Modal;
 using CatalogAPI.Product.CreateProduct;
 using CatalogAPI.Product.DeleteProduct;
 using CatalogAPI.Product.GetProduct;
@@ -27,6 +29,7 @@ builder.Services.AddMediatR(cfg =>
     {
         cfg.RegisterServicesFromAssembly(assembly);
         cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        cfg.AddOpenBehavior(typeof(LoggingBehaviour<,>));
     });
 
 builder.Services.AddValidatorsFromAssembly(assembly);
@@ -38,6 +41,11 @@ builder.Services.AddMarten(options =>
         .GetConnectionString("DefaultConnection")!);
     //options.AutoCreateSchemaObjects = Weasel.Core.AutoCreate.All;
 }).UseLightweightSessions();
+
+if(builder.Environment.IsDevelopment())
+{
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
+}
 
 
 // Add services to the container.

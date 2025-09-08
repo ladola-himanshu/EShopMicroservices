@@ -42,9 +42,6 @@ namespace CatalogAPI.Product.UpdateProduct
             UpdateProductCommand request, 
             CancellationToken cancellationToken)
         {
-            logger.LogInformation("Handling {CommandName} for Product Id: {ProductId}",
-                nameof(UpdateProductCommand), request.Id);
-
             dto.Product product = await session.LoadAsync<dto.Product>(request.Id);
             if (product == null)
             {
